@@ -1,0 +1,68 @@
+name: Publish Javadoc
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish-javadoc:
+    name: Publish Javadoc to GitHub Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate Javadoc
+        run: ./gradlew javadoc
+
+      - name: Aggregate Javadoc
+        run: |
+          mkdir -p javadoc-site
+          for module in hbase-orm-api hbase-orm-processor; do
+            if [ -d "${module}/build/docs/javadoc" ]; then
+              mkdir -p "javadoc-site/${module}"
+              cp -r "${module}/build/docs/javadoc/"* "javadoc-site/${module}/"
+            fi
+          done
+          # Create index page
+          cat > javadoc-site/index.html << 'HEREDOC'
+          <!DOCTYPE html>
+          <html>
+          <head><title>hbase-orm Javadoc</title></head>
+          <body>
+            <h1>hbase-orm API Documentation</h1>
+            <ul>
+              <li><a href="hbase-orm-api/">hbase-orm-api</a></li>
+              <li><a href="hbase-orm-processor/">hbase-orm-processor</a></li>
+            </ul>
+          </body>
+          </html>
+          HEREDOC
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: javadoc-site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

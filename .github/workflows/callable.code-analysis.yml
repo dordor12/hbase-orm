@@ -1,0 +1,23 @@
+name: Code Analysis
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  codeql:
+    name: CodeQL
+    permissions:
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/callable.code-analysis.codeql.yml
+
+  trivy:
+    name: Trivy
+    permissions:
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/callable.code-analysis.trivy.yml

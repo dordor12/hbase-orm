@@ -1,0 +1,63 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/callable.build.yml
+
+  integration-test:
+    name: Integration Test
+    needs: build
+    uses: ./.github/workflows/callable.integration-test.yml
+
+  code-analysis:
+    name: Code Analysis
+    needs: build
+    permissions:
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/callable.code-analysis.yml
+
+  publish-sonatype:
+    name: Publish to Sonatype
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [ build, integration-test, code-analysis ]
+    permissions:
+      contents: read
+    uses: ./.github/workflows/callable.publish-sonatype.yml
+    secrets:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+      GPG_SIGNING_PASSPHRASE: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
+
+  gradle-release:
+    name: Gradle Release
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: publish-sonatype
+    permissions:
+      contents: write
+    uses: ./.github/workflows/callable.gradle-release.yml
+
+  publish-javadoc:
+    name: Publish Javadoc
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: gradle-release
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/callable.publish-javadoc.yml

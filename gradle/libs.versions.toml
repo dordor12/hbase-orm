@@ -1,0 +1,29 @@
+[versions]
+hbase = "2.4.18"
+jackson = "2.16.1"
+javapoet = "1.13.0"
+junit = "5.10.2"
+testcontainers = "1.19.8"
+publish_plugin = "2.0.0"
+release_plugin = "3.1.0"
+
+[libraries]
+hbase-client = { module = "org.apache.hbase:hbase-client", version.ref = "hbase" }
+hbase-common = { module = "org.apache.hbase:hbase-common", version.ref = "hbase" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+jackson-jdk8 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jdk8", version.ref = "jackson" }
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-junit5 = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+
+[bundles]
+jackson = ["jackson-databind", "jackson-jsr310", "jackson-jdk8"]
+testcontainers_junit = ["testcontainers", "testcontainers-junit5"]
+
+[plugins]
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "publish_plugin" }
+release = { id = "net.researchgate.release", version.ref = "release_plugin" }
