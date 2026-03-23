@@ -346,10 +346,92 @@ class AsyncHBaseIntegrationIT {
         assertEquals(LocalDateTime.of(2024, 6, 15, 9, 30), fetched.getCreatedAt());
     }
 
-    // ─── Test 12: Crawl Multi-Version ────────────────────────────────
+    // ─── Test 12: Employee Inherited Field Null ─────────────────────
 
     @Test
     @Order(12)
+    void employeeInheritedFieldNullRoundtrip() throws Exception {
+        Employee emp = new Employee(2L, "Designer");
+        emp.setReporteeCount((short) 3);
+
+        employeeDAO.persist(emp).get(10, TimeUnit.SECONDS);
+
+        Employee fetched = employeeDAO.get(2L).get(10, TimeUnit.SECONDS);
+        assertNotNull(fetched);
+        assertEquals("Designer", fetched.getEmpName());
+        assertEquals(Short.valueOf((short) 3), fetched.getReporteeCount());
+        assertNull(fetched.getCreatedAt(), "Inherited field should be null when not set");
+    }
+
+    // ─── Test 13: Employee Update Inherited Field ─────────────────
+
+    @Test
+    @Order(13)
+    void employeeUpdateInheritedField() throws Exception {
+        Employee emp = new Employee(1L, "Engineer");
+        emp.setReporteeCount((short) 5);
+        emp.setCreatedAt(LocalDateTime.of(2025, 1, 1, 0, 0));
+
+        employeeDAO.persist(emp).get(10, TimeUnit.SECONDS);
+
+        Employee fetched = employeeDAO.get(1L).get(10, TimeUnit.SECONDS);
+        assertNotNull(fetched);
+        assertEquals(LocalDateTime.of(2025, 1, 1, 0, 0), fetched.getCreatedAt(),
+                "Inherited field should reflect the updated value");
+    }
+
+    // ─── Test 14: Employee Bulk with Inherited Fields ─────────────
+
+    @Test
+    @Order(14)
+    void employeeBulkWithInheritedFields() throws Exception {
+        Employee e1 = new Employee(10L, "Alice");
+        e1.setCreatedAt(LocalDateTime.of(2024, 1, 1, 8, 0));
+
+        Employee e2 = new Employee(11L, "Bob");
+        e2.setCreatedAt(LocalDateTime.of(2024, 2, 1, 9, 0));
+
+        Employee e3 = new Employee(12L, "Carol");
+        // e3 has no createdAt
+
+        employeeDAO.persistAll(List.of(e1, e2, e3)).get(10, TimeUnit.SECONDS);
+
+        List<Employee> fetched = employeeDAO.getAll(List.of(10L, 11L, 12L))
+                .get(10, TimeUnit.SECONDS);
+        assertEquals(3, fetched.size());
+
+        Map<Long, Employee> byId = new HashMap<>();
+        for (Employee e : fetched) {
+            byId.put(e.getEmpid(), e);
+        }
+
+        assertEquals(LocalDateTime.of(2024, 1, 1, 8, 0), byId.get(10L).getCreatedAt());
+        assertEquals(LocalDateTime.of(2024, 2, 1, 9, 0), byId.get(11L).getCreatedAt());
+        assertNull(byId.get(12L).getCreatedAt());
+    }
+
+    // ─── Test 15: Employee Delete and Recreate Inherited Field ────
+
+    @Test
+    @Order(15)
+    void employeeDeleteAndRecreateWithInheritedField() throws Exception {
+        employeeDAO.delete(10L).get(10, TimeUnit.SECONDS);
+        assertFalse(employeeDAO.exists(10L).get(10, TimeUnit.SECONDS));
+
+        Employee emp = new Employee(10L, "Alice-v2");
+        emp.setCreatedAt(LocalDateTime.of(2026, 3, 23, 12, 0));
+        employeeDAO.persist(emp).get(10, TimeUnit.SECONDS);
+
+        Employee fetched = employeeDAO.get(10L).get(10, TimeUnit.SECONDS);
+        assertNotNull(fetched);
+        assertEquals("Alice-v2", fetched.getEmpName());
+        assertEquals(LocalDateTime.of(2026, 3, 23, 12, 0), fetched.getCreatedAt());
+    }
+
+    // ─── Test 16: Crawl Multi-Version ────────────────────────────────
+
+    @Test
+    @Order(16)
     void crawlMultiVersionPersistAndGet() throws Exception {
         Crawl crawl = new Crawl("http://async-test.com");
         crawl.addF1(1000L, 1.1);

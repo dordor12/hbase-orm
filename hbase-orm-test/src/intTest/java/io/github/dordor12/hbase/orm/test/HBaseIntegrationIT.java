@@ -255,6 +255,83 @@ class HBaseIntegrationIT {
 
     @Test
     @Order(11)
+    void employeeInheritedFieldNullRoundtrip() throws Exception {
+        // Persist without setting the inherited createdAt field
+        Employee emp = new Employee(2L, "Designer");
+        emp.setReporteeCount((short) 3);
+
+        employeeDAO.persist(emp);
+
+        Employee fetched = employeeDAO.get(2L);
+        assertNotNull(fetched);
+        assertEquals("Designer", fetched.getEmpName());
+        assertEquals(Short.valueOf((short) 3), fetched.getReporteeCount());
+        assertNull(fetched.getCreatedAt(), "Inherited field should be null when not set");
+    }
+
+    @Test
+    @Order(12)
+    void employeeUpdateInheritedField() throws Exception {
+        // Re-persist employee 1 with a different createdAt
+        Employee emp = new Employee(1L, "Engineer");
+        emp.setReporteeCount((short) 5);
+        emp.setCreatedAt(LocalDateTime.of(2025, 1, 1, 0, 0));
+
+        employeeDAO.persist(emp);
+
+        Employee fetched = employeeDAO.get(1L);
+        assertNotNull(fetched);
+        assertEquals(LocalDateTime.of(2025, 1, 1, 0, 0), fetched.getCreatedAt(),
+                "Inherited field should reflect the updated value");
+    }
+
+    @Test
+    @Order(13)
+    void employeeBulkWithInheritedFields() throws Exception {
+        Employee e1 = new Employee(10L, "Alice");
+        e1.setCreatedAt(LocalDateTime.of(2024, 1, 1, 8, 0));
+
+        Employee e2 = new Employee(11L, "Bob");
+        e2.setCreatedAt(LocalDateTime.of(2024, 2, 1, 9, 0));
+
+        Employee e3 = new Employee(12L, "Carol");
+        // e3 has no createdAt
+
+        employeeDAO.persist(List.of(e1, e2, e3));
+
+        List<Employee> fetched = employeeDAO.get(List.of(10L, 11L, 12L));
+        assertEquals(3, fetched.size());
+
+        // Results come back sorted by row key (Long bytes), verify each
+        Map<Long, Employee> byId = new HashMap<>();
+        for (Employee e : fetched) {
+            byId.put(e.getEmpid(), e);
+        }
+
+        assertEquals(LocalDateTime.of(2024, 1, 1, 8, 0), byId.get(10L).getCreatedAt());
+        assertEquals(LocalDateTime.of(2024, 2, 1, 9, 0), byId.get(11L).getCreatedAt());
+        assertNull(byId.get(12L).getCreatedAt());
+    }
+
+    @Test
+    @Order(14)
+    void employeeDeleteAndRecreatWithInheritedField() throws Exception {
+        // Delete employee 10, then re-persist with different inherited field value
+        employeeDAO.delete(10L);
+        assertFalse(employeeDAO.exists(10L));
+
+        Employee emp = new Employee(10L, "Alice-v2");
+        emp.setCreatedAt(LocalDateTime.of(2026, 3, 23, 12, 0));
+        employeeDAO.persist(emp);
+
+        Employee fetched = employeeDAO.get(10L);
+        assertNotNull(fetched);
+        assertEquals("Alice-v2", fetched.getEmpName());
+        assertEquals(LocalDateTime.of(2026, 3, 23, 12, 0), fetched.getCreatedAt());
+    }
+
+    @Test
+    @Order(15)
     void citizenIncrementLongField() throws Exception {
         Citizen citizen = new Citizen("US", 500, "Counter");
         citizen.setF3(0L);
