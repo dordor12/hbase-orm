@@ -17,6 +17,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.builder.ImageFromDockerfile;
 
 import java.math.BigDecimal;
 import java.net.Socket;
@@ -51,7 +52,10 @@ class AsyncHBaseIntegrationIT {
     @BeforeAll
     @SuppressWarnings("resource")
     static void setUp() throws Exception {
-        hbaseContainer = new GenericContainer<>("hbase-test:2.4.18")
+        java.nio.file.Path dockerDir = java.nio.file.Path.of(System.getProperty("project.dir"), "docker");
+        hbaseContainer = new GenericContainer<>(
+                new ImageFromDockerfile()
+                        .withDockerfile(dockerDir.resolve("Dockerfile")))
                 .withCreateContainerCmdModifier(cmd -> {
                     cmd.withHostName("localhost");
                     cmd.getHostConfig()

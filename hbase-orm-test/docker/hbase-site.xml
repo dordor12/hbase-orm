@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <!-- Standalone mode -->
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>hbase.unsafe.stream.capability.enforce</name>
+        <value>false</value>
+    </property>
+
+    <!-- ZK: bind to all interfaces -->
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>localhost</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>2181</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPortAddress</name>
+        <value>0.0.0.0</value>
+    </property>
+
+    <!-- Advertise as localhost so external clients can reach via port mapping -->
+    <property>
+        <name>hbase.master.hostname</name>
+        <value>localhost</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.hostname</name>
+        <value>localhost</value>
+    </property>
+
+    <!-- Bind IPC to all interfaces so port-mapped connections work -->
+    <property>
+        <name>hbase.master.ipc.address</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.ipc.address</name>
+        <value>0.0.0.0</value>
+    </property>
+</configuration>

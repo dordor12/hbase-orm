@@ -62,6 +62,5 @@ val intTest by tasks.registering(Test::class) {
     useJUnitPlatform {
         includeTags("integration")
     }
-    environment("DOCKER_HOST", "unix:///Users/dor.amid/.rd/docker.sock")
-    environment("TESTCONTAINERS_RYUK_DISABLED", "true")
+    systemProperty("project.dir", project.projectDir.absolutePath)
 }
