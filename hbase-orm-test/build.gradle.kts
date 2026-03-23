@@ -1,5 +1,8 @@
+import java.time.Duration
+
 plugins {
     java
+    alias(libs.plugins.jmh)
 }
 
 group = "io.github.dordor12"
@@ -15,12 +18,22 @@ sourceSets {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
+    create("perfTest") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
 }
 
 val intTestImplementation by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
 val intTestRuntimeOnly by configurations.getting {
+    extendsFrom(configurations.runtimeOnly.get())
+}
+val perfTestImplementation by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+val perfTestRuntimeOnly by configurations.getting {
     extendsFrom(configurations.runtimeOnly.get())
 }
 
@@ -43,12 +56,27 @@ dependencies {
     intTestImplementation(libs.junit.jupiter)
     intTestImplementation(libs.bundles.testcontainers.junit)
     intTestRuntimeOnly(libs.junit.platform)
+
+    // Performance test dependencies
+    perfTestImplementation(platform(libs.junit.bom))
+    perfTestImplementation(libs.junit.jupiter)
+    perfTestImplementation(libs.bundles.testcontainers.junit)
+    perfTestRuntimeOnly(libs.junit.platform)
 }
 
-// Unit tests: exclude integration tag
+// JMH configuration
+jmh {
+    fork = 1
+    warmupIterations = 2
+    iterations = 3
+    resultFormat = "JSON"
+    resultsFile = project.file("build/reports/jmh/results.json")
+}
+
+// Unit tests: exclude integration and perf tags
 tasks.test {
     useJUnitPlatform {
-        excludeTags("integration")
+        excludeTags("integration", "perf")
     }
 }
 
@@ -63,4 +91,18 @@ val intTest by tasks.registering(Test::class) {
         includeTags("integration")
     }
     systemProperty("project.dir", project.projectDir.absolutePath)
+}
+
+// Performance test task
+val perfTest by tasks.registering(Test::class) {
+    description = "Runs performance tests against HBase Docker."
+    group = "verification"
+    testClassesDirs = sourceSets["perfTest"].output.classesDirs
+    classpath = sourceSets["perfTest"].runtimeClasspath
+    shouldRunAfter(tasks.test)
+    useJUnitPlatform {
+        includeTags("perf")
+    }
+    systemProperty("project.dir", project.projectDir.absolutePath)
+    timeout = Duration.ofMinutes(10)
 }

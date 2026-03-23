@@ -1,0 +1,70 @@
+name: Performance Tests
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  perf-test:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run Performance Tests
+        run: ./gradlew :hbase-orm-test:perfTest
+        env:
+          DOCKER_HOST: unix:///var/run/docker.sock
+          TESTCONTAINERS_RYUK_DISABLED: 'true'
+
+      - name: Upload performance test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: perf-test-results
+          path: |
+            hbase-orm-test/build/reports/perfTest/
+            hbase-orm-test/build/reports/tests/perfTest/
+            hbase-orm-test/build/test-results/perfTest/
+          retention-days: 30
+
+      - name: Generate step summary
+        if: always()
+        run: |
+          RESULTS="hbase-orm-test/build/reports/perfTest/results.json"
+          if [ ! -f "$RESULTS" ]; then
+            echo "No performance test results found." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "## Performance Test Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Test | Ops | p50 (us) | p95 (us) | p99 (us) | Mean (us) | Throughput (ops/s) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|------|----:|--------:|--------:|--------:|---------:|------------------:|" >> "$GITHUB_STEP_SUMMARY"
+
+          python3 -c "
+          import json, sys
+          with open('$RESULTS') as f:
+              data = json.load(f)
+          for entry in data:
+              name = entry.get('name', '')
+              ops = entry.get('ops', 0)
+              p50 = entry.get('p50_us', 0)
+              p95 = entry.get('p95_us', 0)
+              p99 = entry.get('p99_us', 0)
+              mean = entry.get('mean_us', 0)
+              tp = entry.get('throughput_ops_sec', 0)
+              print(f'| {name} | {ops} | {p50:.1f} | {p95:.1f} | {p99:.1f} | {mean:.1f} | {tp:.1f} |')
+          " >> "$GITHUB_STEP_SUMMARY"

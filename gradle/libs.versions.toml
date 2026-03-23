@@ -2,6 +2,8 @@
 hbase = "2.4.18"
 jackson = "2.16.1"
 javapoet = "1.13.0"
+jmh = "1.37"
+jmh-plugin = "0.7.2"
 junit = "5.10.2"
 testcontainers = "1.19.8"
 publish_plugin = "2.0.0"
@@ -25,5 +27,6 @@ jackson = ["jackson-databind", "jackson-jsr310", "jackson-jdk8"]
 testcontainers_junit = ["testcontainers", "testcontainers-junit5"]
 
 [plugins]
+jmh = { id = "me.champeau.jmh", version.ref = "jmh-plugin" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "publish_plugin" }
 release = { id = "net.researchgate.release", version.ref = "release_plugin" }

@@ -31,6 +31,16 @@ jobs:
       security-events: write
     uses: ./.github/workflows/callable.code-analysis.yml
 
+  benchmarks:
+    name: Benchmarks
+    needs: build
+    uses: ./.github/workflows/callable.benchmark.yml
+
+  perf-test:
+    name: Performance Tests
+    needs: build
+    uses: ./.github/workflows/callable.perf-test.yml
+
   publish-sonatype:
     name: Publish to Sonatype
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
