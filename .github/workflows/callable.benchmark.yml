@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   benchmarks:
@@ -34,6 +34,20 @@ jobs:
           path: hbase-orm-test/build/reports/jmh/
           retention-days: 30
 
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        if: always() && hashFiles('hbase-orm-test/build/reports/jmh/results.json') != ''
+        with:
+          tool: 'jmh'
+          output-file-path: hbase-orm-test/build/reports/jmh/results.json
+          gh-pages-branch: gh-benchmarks
+          benchmark-data-dir-path: benchmarks/jmh
+          auto-push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+          comment-on-alert: true
+          alert-threshold: '150%'
+          comment-always: ${{ github.event_name == 'pull_request' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate step summary
         if: always()
         run: |
@@ -45,10 +59,13 @@ jobs:
 
           echo "## JMH Benchmark Results" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "> Interactive charts: [GitHub Pages](https://dordor12.github.io/hbase-orm/benchmarks/jmh/)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "<details><summary>Full results table</summary>" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "| Benchmark | Score | Unit |" >> "$GITHUB_STEP_SUMMARY"
           echo "|-----------|------:|------|" >> "$GITHUB_STEP_SUMMARY"
 
-          # Parse JSON array — each element has benchmark, primaryMetric.score, primaryMetric.scoreUnit
           python3 -c "
           import json, sys
           with open('$RESULTS') as f:
@@ -59,3 +76,6 @@ jobs:
               unit = entry.get('primaryMetric', {}).get('scoreUnit', '')
               print(f'| {name} | {score:.2f} | {unit} |')
           " >> "$GITHUB_STEP_SUMMARY"
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "</details>" >> "$GITHUB_STEP_SUMMARY"

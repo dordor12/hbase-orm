@@ -34,11 +34,15 @@ jobs:
   benchmarks:
     name: Benchmarks
     needs: build
+    permissions:
+      contents: write
     uses: ./.github/workflows/callable.benchmark.yml
 
   perf-test:
     name: Performance Tests
     needs: build
+    permissions:
+      contents: write
     uses: ./.github/workflows/callable.perf-test.yml
 
   publish-sonatype:

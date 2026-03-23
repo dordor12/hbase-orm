@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   perf-test:
@@ -40,6 +40,44 @@ jobs:
             hbase-orm-test/build/test-results/perfTest/
           retention-days: 30
 
+      - name: Convert results for benchmark-action
+        if: always()
+        run: |
+          RESULTS="hbase-orm-test/build/reports/perfTest/results.json"
+          if [ ! -f "$RESULTS" ]; then
+            exit 0
+          fi
+
+          python3 -c "
+          import json
+          with open('$RESULTS') as f:
+              data = json.load(f)
+          output = []
+          for entry in data:
+              output.append({
+                  'name': entry['name'] + ' (p50)',
+                  'unit': 'us',
+                  'value': entry['p50_us'],
+                  'extra': f\"p95={entry['p95_us']:.1f}us p99={entry['p99_us']:.1f}us mean={entry['mean_us']:.1f}us throughput={entry['throughput_ops_sec']:.1f}ops/s\"
+              })
+          with open('benchmark-results.json', 'w') as f:
+              json.dump(output, f, indent=2)
+          "
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        if: always() && hashFiles('benchmark-results.json') != ''
+        with:
+          tool: 'customSmallerIsBetter'
+          output-file-path: benchmark-results.json
+          gh-pages-branch: gh-benchmarks
+          benchmark-data-dir-path: benchmarks/perf-test
+          auto-push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+          comment-on-alert: true
+          alert-threshold: '150%'
+          comment-always: ${{ github.event_name == 'pull_request' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate step summary
         if: always()
         run: |
@@ -50,6 +88,10 @@ jobs:
           fi
 
           echo "## Performance Test Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "> Interactive charts: [GitHub Pages](https://dordor12.github.io/hbase-orm/benchmarks/perf-test/)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "<details><summary>Full results table</summary>" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "| Test | Ops | p50 (us) | p95 (us) | p99 (us) | Mean (us) | Throughput (ops/s) |" >> "$GITHUB_STEP_SUMMARY"
           echo "|------|----:|--------:|--------:|--------:|---------:|------------------:|" >> "$GITHUB_STEP_SUMMARY"
@@ -68,3 +110,6 @@ jobs:
               tp = entry.get('throughput_ops_sec', 0)
               print(f'| {name} | {ops} | {p50:.1f} | {p95:.1f} | {p99:.1f} | {mean:.1f} | {tp:.1f} |')
           " >> "$GITHUB_STEP_SUMMARY"
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "</details>" >> "$GITHUB_STEP_SUMMARY"

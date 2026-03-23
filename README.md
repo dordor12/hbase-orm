@@ -238,6 +238,48 @@ hbase-orm/
 └── hbase-orm-test/         # Example entities, unit & integration tests
 ```
 
+## Performance
+
+Performance benchmarks run on every PR via CI. Interactive trend charts are available on [GitHub Pages](https://dordor12.github.io/hbase-orm/benchmarks/jmh/).
+
+### Microbenchmarks (JMH)
+
+The ORM layer adds **sub-microsecond overhead** — all mapping is compile-time generated with zero reflection.
+
+| Category | Operation | Latency (ns/op) |
+|----------|-----------|----------------:|
+| **Codec** | Native types (Integer, Long, etc.) | 1–10 |
+| **Codec** | BigDecimal | ~18 |
+| **Codec** | Jackson fallback (LocalDateTime) | 60–107 |
+| **Mapper** | Citizen full (11 fields + composite key) | 320–553 |
+| **Mapper** | Citizen minimal (key + 1 field) | 37–136 |
+| **Mapper** | Employee (inheritance + LocalDateTime) | 134–225 |
+| **Row Key** | Composite (String#Integer) | 13–31 |
+| **Row Key** | Simple (Long/String) | 2–8 |
+
+### Load Tests (HBase Docker)
+
+End-to-end operations against a real HBase instance. [Trend charts](https://dordor12.github.io/hbase-orm/benchmarks/perf-test/).
+
+| Operation | Sync p50 (us) | Async p50 (us) | Winner |
+|-----------|-------------:|--------------:|--------|
+| Single put+get | 1,729 | 1,291 | Async (~25% faster) |
+| Bulk put 100 | 1,754 | 8,650 | Sync (~5x faster) |
+| Prefix scan 100 | 1,131 | 973 | ~Equal |
+| Bulk get 100 | 2,155 | 1,960 | ~Equal |
+
+**Key insight:** Use sync DAO for batch writes (single batched RPC), async DAO for single operations and concurrent workloads.
+
+### Running Locally
+
+```bash
+# JMH microbenchmarks (no Docker needed)
+./gradlew :hbase-orm-test:jmh
+
+# Load tests (requires Docker)
+./gradlew :hbase-orm-test:perfTest
+```
+
 ## Building
 
 ```bash
