@@ -22,9 +22,10 @@ nexusPublishing {
     }
 }
 
-// Ensure signing tasks run after publish tasks are configured
+// Break circular dependency: publish depends on sign, so sign must not dependOn publish.
+// Use mustRunAfter to ensure correct ordering without creating a cycle.
 subprojects {
-    tasks.withType<Sign>().configureEach {
-        dependsOn(tasks.withType<PublishToMavenRepository>())
+    tasks.withType<PublishToMavenRepository>().configureEach {
+        mustRunAfter(tasks.withType<Sign>())
     }
 }
