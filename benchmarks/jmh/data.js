@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774292524197,
+  "lastUpdate": 1774383440444,
   "repoUrl": "https://github.com/dordor12/hbase-orm",
   "entries": {
     "Benchmark": [
@@ -558,6 +558,286 @@ window.BENCHMARK_DATA = {
           {
             "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.employeeParseRowKey",
             "value": 8.17415826423831,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "committer": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "distinct": true,
+          "id": "00e45707aee84aed39454d0d37876c55054a1f05",
+          "message": "Re-run pipeline with pre-built HBase image",
+          "timestamp": "2026-03-24T21:39:25+02:00",
+          "tree_id": "0d0270c4d90754b6c188f4f03e9fbdcb6c8582f4",
+          "url": "https://github.com/dordor12/hbase-orm/commit/00e45707aee84aed39454d0d37876c55054a1f05"
+        },
+        "date": 1774383440011,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.canDeserializeString",
+            "value": 0.4908197975929495,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeAsString",
+            "value": 20.679508461827616,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeBigDecimal",
+            "value": 18.664195714628036,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeBoolean",
+            "value": 1.2275212746149025,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeDouble",
+            "value": 4.822207918787295,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeFloat",
+            "value": 3.206571592462423,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeInteger",
+            "value": 2.5001230389390092,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeLocalDateTime",
+            "value": 232.2669358227653,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeLong",
+            "value": 4.500276229321373,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeShort",
+            "value": 1.6101329491955072,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.deserializeString",
+            "value": 16.012912447579104,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeAsString",
+            "value": 19.529069408649374,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeBigDecimal",
+            "value": 41.178062524329064,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeBoolean",
+            "value": 2.0988284205237933,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeDouble",
+            "value": 2.0990746091057058,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeFloat",
+            "value": 2.0822692829205387,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeInteger",
+            "value": 2.105701072188664,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeLocalDateTime",
+            "value": 138.3582865069842,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeLong",
+            "value": 2.0986562040903194,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeShort",
+            "value": 2.079191519561492,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.CodecBenchmark.serializeString",
+            "value": 9.957976615206563,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.citizenFullReadFromPut",
+            "value": 1839.189067591574,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.citizenFullReadFromResult",
+            "value": 2116.1496606137757,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.citizenFullWriteAsPut",
+            "value": 800.5237025000314,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.citizenFullWriteAsResult",
+            "value": 972.1904289250925,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.citizenMinimalReadFromResult",
+            "value": 496.54759881099875,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.citizenMinimalWriteAsPut",
+            "value": 100.43721493492028,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.crawlReadFromPut",
+            "value": 228.7908573191164,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.crawlReadFromResult",
+            "value": 329.89315916765077,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.crawlWriteAsPut",
+            "value": 194.90378733612746,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.employeeReadFromPut",
+            "value": 555.6173719063526,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.employeeReadFromResult",
+            "value": 822.0964676339155,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.employeeWriteAsPut",
+            "value": 400.64664248612604,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.MapperBenchmark.employeeWriteAsResult",
+            "value": 480.353983145867,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.citizenComposeRowKey",
+            "value": 31.8321071625568,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.citizenGetRowKey",
+            "value": 23.44232086733386,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.citizenParseRowKey",
+            "value": 80.71677905408329,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.crawlComposeRowKey",
+            "value": 13.529722648647692,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.crawlGetRowKey",
+            "value": 0.8847377813277196,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.crawlParseRowKey",
+            "value": 20.7444984857795,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.employeeComposeRowKey",
+            "value": 3.9439576980667113,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.employeeGetRowKey",
+            "value": 0.8728233417031149,
+            "unit": "ns/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "io.github.dordor12.hbase.orm.bench.RowKeyBenchmark.employeeParseRowKey",
+            "value": 7.192567751387348,
             "unit": "ns/op",
             "extra": "iterations: 3\nforks: 1\nthreads: 1"
           }
