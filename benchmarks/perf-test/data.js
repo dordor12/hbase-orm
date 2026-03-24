@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774381033737,
+  "lastUpdate": 1774381327113,
   "repoUrl": "https://github.com/dordor12/hbase-orm",
   "entries": {
     "Benchmark": [
@@ -140,6 +140,76 @@ window.BENCHMARK_DATA = {
             "value": 4731.93,
             "unit": "us",
             "extra": "p95=13089.4us p99=22810.8us mean=6109.8us throughput=163.7ops/s"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "committer": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "distinct": true,
+          "id": "00e45707aee84aed39454d0d37876c55054a1f05",
+          "message": "Re-run pipeline with pre-built HBase image",
+          "timestamp": "2026-03-24T21:39:25+02:00",
+          "tree_id": "0d0270c4d90754b6c188f4f03e9fbdcb6c8582f4",
+          "url": "https://github.com/dordor12/hbase-orm/commit/00e45707aee84aed39454d0d37876c55054a1f05"
+        },
+        "date": 1774381326707,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "compare.sync.single_put_get (p50)",
+            "value": 1674.27,
+            "unit": "us",
+            "extra": "p95=2497.7us p99=3336.9us mean=1736.7us throughput=575.6ops/s"
+          },
+          {
+            "name": "compare.async.single_put_get (p50)",
+            "value": 940.72,
+            "unit": "us",
+            "extra": "p95=1570.7us p99=3409.0us mean=1036.5us throughput=964.3ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_put_100 (p50)",
+            "value": 2851.95,
+            "unit": "us",
+            "extra": "p95=4172.5us p99=4958.6us mean=3093.6us throughput=323.2ops/s"
+          },
+          {
+            "name": "compare.async.bulk_put_100 (p50)",
+            "value": 14150.85,
+            "unit": "us",
+            "extra": "p95=18293.0us p99=20957.0us mean=14324.1us throughput=69.8ops/s"
+          },
+          {
+            "name": "compare.sync.prefix_scan_100 (p50)",
+            "value": 2199.77,
+            "unit": "us",
+            "extra": "p95=4396.4us p99=5995.9us mean=2634.6us throughput=379.5ops/s"
+          },
+          {
+            "name": "compare.async.prefix_scan_100 (p50)",
+            "value": 1412.09,
+            "unit": "us",
+            "extra": "p95=1813.0us p99=1946.8us mean=1363.8us throughput=733.1ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_get_100 (p50)",
+            "value": 4434.45,
+            "unit": "us",
+            "extra": "p95=6871.4us p99=10001.9us mean=4643.1us throughput=215.3ops/s"
+          },
+          {
+            "name": "compare.async.bulk_get_100 (p50)",
+            "value": 3721.84,
+            "unit": "us",
+            "extra": "p95=5465.7us p99=5787.6us mean=3918.8us throughput=255.1ops/s"
           }
         ]
       }
