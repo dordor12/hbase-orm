@@ -1,8 +1,5 @@
 package io.github.dordor12.hbase.orm.test;
 
-import com.github.dockerjava.api.model.ExposedPort;
-import com.github.dockerjava.api.model.PortBinding;
-import com.github.dockerjava.api.model.Ports;
 import io.github.dordor12.hbase.orm.codec.BestSuitCodec;
 import io.github.dordor12.hbase.orm.dao.AsyncHBaseDAO;
 import io.github.dordor12.hbase.orm.mapper.HBaseMapper;
@@ -15,13 +12,8 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.jupiter.api.*;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.images.builder.ImageFromDockerfile;
 
 import java.math.BigDecimal;
-import java.net.Socket;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
@@ -36,12 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AsyncHBaseIntegrationIT {
 
-    private static final int ZK_PORT = 2181;
-    private static final int MASTER_PORT = 16000;
-    private static final int RS_PORT = 16020;
-    private static final int MASTER_UI_PORT = 16010;
-
-    private static GenericContainer<?> hbaseContainer;
     private static Connection syncConnection;
     private static AsyncConnection asyncConnection;
 
@@ -52,34 +38,14 @@ class AsyncHBaseIntegrationIT {
     @BeforeAll
     @SuppressWarnings("resource")
     static void setUp() throws Exception {
-        java.nio.file.Path dockerDir = java.nio.file.Path.of(System.getProperty("project.dir"), "docker");
-        hbaseContainer = new GenericContainer<>(
-                new ImageFromDockerfile()
-                        .withDockerfile(dockerDir.resolve("Dockerfile")))
-                .withCreateContainerCmdModifier(cmd -> {
-                    cmd.withHostName("localhost");
-                    cmd.getHostConfig()
-                            .withPortBindings(
-                                    new PortBinding(Ports.Binding.bindPort(ZK_PORT), new ExposedPort(ZK_PORT)),
-                                    new PortBinding(Ports.Binding.bindPort(MASTER_PORT), new ExposedPort(MASTER_PORT)),
-                                    new PortBinding(Ports.Binding.bindPort(RS_PORT), new ExposedPort(RS_PORT)),
-                                    new PortBinding(Ports.Binding.bindPort(MASTER_UI_PORT), new ExposedPort(MASTER_UI_PORT))
-                            );
-                })
-                .waitingFor(Wait.forLogMessage(".*Master has completed initialization.*", 1))
-                .withStartupTimeout(Duration.ofMinutes(3));
-
-        hbaseContainer.start();
-        waitForZookeeper("localhost", ZK_PORT, 60);
+        SharedHBaseContainer.get();
 
         Configuration conf = HBaseConfiguration.create();
         conf.set(HConstants.ZOOKEEPER_QUORUM, "localhost");
-        conf.setInt(HConstants.ZOOKEEPER_CLIENT_PORT, ZK_PORT);
+        conf.setInt(HConstants.ZOOKEEPER_CLIENT_PORT, SharedHBaseContainer.ZK_PORT);
         conf.set(HConstants.ZOOKEEPER_ZNODE_PARENT, "/hbase");
 
-        // Sync connection for Admin (table setup)
         syncConnection = ConnectionFactory.createConnection(conf);
-        // Async connection for DAO
         asyncConnection = ConnectionFactory.createAsyncConnection(conf).get(30, TimeUnit.SECONDS);
 
         createNamespacesAndTables();
@@ -94,7 +60,7 @@ class AsyncHBaseIntegrationIT {
     static void tearDown() throws Exception {
         if (asyncConnection != null) asyncConnection.close();
         if (syncConnection != null) syncConnection.close();
-        if (hbaseContainer != null) hbaseContainer.stop();
+        // Container stays alive for other test classes
     }
 
     // ─── Table Setup ─────────────────────────────────────────────────
@@ -449,24 +415,4 @@ class AsyncHBaseIntegrationIT {
         assertEquals(3.3, fetched.getF1().get(3000L));
     }
 
-    // ─── Helpers ─────────────────────────────────────────────────────
-
-    private static void waitForZookeeper(String host, int port, int maxRetries) throws Exception {
-        for (int i = 0; i < maxRetries; i++) {
-            try (Socket socket = new Socket(host, port)) {
-                socket.getOutputStream().write("ruok".getBytes());
-                socket.getOutputStream().flush();
-                byte[] buf = new byte[4];
-                int read = socket.getInputStream().read(buf);
-                if (read == 4 && new String(buf).equals("imok")) {
-                    System.out.println("ZooKeeper ready after " + (i + 1) + " attempts");
-                    return;
-                }
-            } catch (Exception e) {
-                // not ready yet
-            }
-            Thread.sleep(1000);
-        }
-        throw new RuntimeException("ZooKeeper did not become ready at " + host + ":" + port);
-    }
 }

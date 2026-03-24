@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
+import org.testcontainers.utility.DockerImageName;
 
 import java.net.Socket;
 import java.nio.file.Path;
@@ -53,11 +54,21 @@ public abstract class HBasePerfTestBase {
     @BeforeAll
     @SuppressWarnings("resource")
     static void setUpHBase() throws Exception {
-        Path dockerDir = Path.of(System.getProperty("project.dir"), "docker");
-        hbaseContainer = new GenericContainer<>(
-                new ImageFromDockerfile()
-                        .withDockerfile(dockerDir.resolve("Dockerfile")))
-                .withCreateContainerCmdModifier(cmd -> {
+        String imageName = System.getenv("HBASE_TEST_IMAGE");
+        if (imageName == null || imageName.isBlank()) {
+            imageName = System.getProperty("hbase.test.image", "");
+        }
+
+        if (imageName.isBlank()) {
+            Path dockerDir = Path.of(System.getProperty("project.dir"), "docker");
+            hbaseContainer = new GenericContainer<>(
+                    new ImageFromDockerfile()
+                            .withDockerfile(dockerDir.resolve("Dockerfile")));
+        } else {
+            hbaseContainer = new GenericContainer<>(DockerImageName.parse(imageName));
+        }
+
+        hbaseContainer.withCreateContainerCmdModifier(cmd -> {
                     cmd.withHostName("localhost");
                     cmd.getHostConfig()
                             .withPortBindings(
