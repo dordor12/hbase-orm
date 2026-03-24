@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774380658635,
+  "lastUpdate": 1774381033737,
   "repoUrl": "https://github.com/dordor12/hbase-orm",
   "entries": {
     "Benchmark": [
@@ -70,6 +70,76 @@ window.BENCHMARK_DATA = {
             "value": 4427.84,
             "unit": "us",
             "extra": "p95=15472.1us p99=30641.1us mean=6218.1us throughput=160.8ops/s"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "committer": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "distinct": true,
+          "id": "35b76280908c4f4698c843374894f9fba0761af2",
+          "message": "Add GHCR login before pulling HBase test image in CI\n\nThe GHCR package requires authentication to pull. Add docker/login-action\nstep before the pull in both integration-test and perf-test workflows.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>",
+          "timestamp": "2026-03-24T21:34:37+02:00",
+          "tree_id": "0d0270c4d90754b6c188f4f03e9fbdcb6c8582f4",
+          "url": "https://github.com/dordor12/hbase-orm/commit/35b76280908c4f4698c843374894f9fba0761af2"
+        },
+        "date": 1774381033218,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "compare.sync.single_put_get (p50)",
+            "value": 1461.52,
+            "unit": "us",
+            "extra": "p95=2180.0us p99=3017.2us mean=1526.8us throughput=654.7ops/s"
+          },
+          {
+            "name": "compare.async.single_put_get (p50)",
+            "value": 956.63,
+            "unit": "us",
+            "extra": "p95=1390.7us p99=3058.3us mean=1041.6us throughput=959.6ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_put_100 (p50)",
+            "value": 2937.32,
+            "unit": "us",
+            "extra": "p95=4878.2us p99=5271.5us mean=3253.7us throughput=307.3ops/s"
+          },
+          {
+            "name": "compare.async.bulk_put_100 (p50)",
+            "value": 13175.18,
+            "unit": "us",
+            "extra": "p95=23399.3us p99=23747.6us mean=14979.7us throughput=66.8ops/s"
+          },
+          {
+            "name": "compare.sync.prefix_scan_100 (p50)",
+            "value": 1800.56,
+            "unit": "us",
+            "extra": "p95=3010.8us p99=3516.7us mean=2074.0us throughput=482.1ops/s"
+          },
+          {
+            "name": "compare.async.prefix_scan_100 (p50)",
+            "value": 1313.58,
+            "unit": "us",
+            "extra": "p95=1972.7us p99=2105.2us mean=1399.0us throughput=714.6ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_get_100 (p50)",
+            "value": 3837.18,
+            "unit": "us",
+            "extra": "p95=10729.6us p99=11459.4us mean=4615.5us throughput=216.6ops/s"
+          },
+          {
+            "name": "compare.async.bulk_get_100 (p50)",
+            "value": 4731.93,
+            "unit": "us",
+            "extra": "p95=13089.4us p99=22810.8us mean=6109.8us throughput=163.7ops/s"
           }
         ]
       }
