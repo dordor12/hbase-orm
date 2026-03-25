@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774381327113,
+  "lastUpdate": 1774428409699,
   "repoUrl": "https://github.com/dordor12/hbase-orm",
   "entries": {
     "Benchmark": [
@@ -210,6 +210,76 @@ window.BENCHMARK_DATA = {
             "value": 3721.84,
             "unit": "us",
             "extra": "p95=5465.7us p99=5787.6us mean=3918.8us throughput=255.1ops/s"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "committer": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "distinct": true,
+          "id": "6c90c8f064860725df20ba7c5999aa23bb901b4c",
+          "message": "Migrate Maven Central publishing from nexus-publish to VannikTech plugin\n\nOSSRH staging API returns 402 (deprecated/sunset). Switch to\ncom.vanniktech.maven.publish which uses the new Central Portal API.\nAdds retry logic and GPG_SIGNING_KEY_ID secret.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>",
+          "timestamp": "2026-03-25T10:43:54+02:00",
+          "tree_id": "f829264962a7fc4fc7b75f9fa1531d3073248314",
+          "url": "https://github.com/dordor12/hbase-orm/commit/6c90c8f064860725df20ba7c5999aa23bb901b4c"
+        },
+        "date": 1774428409264,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "compare.sync.single_put_get (p50)",
+            "value": 1695.5,
+            "unit": "us",
+            "extra": "p95=2486.5us p99=3784.2us mean=1752.5us throughput=570.4ops/s"
+          },
+          {
+            "name": "compare.async.single_put_get (p50)",
+            "value": 1224.4,
+            "unit": "us",
+            "extra": "p95=1796.4us p99=3044.2us mean=1307.8us throughput=764.3ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_put_100 (p50)",
+            "value": 3301.01,
+            "unit": "us",
+            "extra": "p95=4847.2us p99=5721.6us mean=3493.5us throughput=286.2ops/s"
+          },
+          {
+            "name": "compare.async.bulk_put_100 (p50)",
+            "value": 17137.46,
+            "unit": "us",
+            "extra": "p95=23295.4us p99=24267.7us mean=17781.5us throughput=56.2ops/s"
+          },
+          {
+            "name": "compare.sync.prefix_scan_100 (p50)",
+            "value": 1855.74,
+            "unit": "us",
+            "extra": "p95=2359.4us p99=3648.5us mean=1945.7us throughput=513.8ops/s"
+          },
+          {
+            "name": "compare.async.prefix_scan_100 (p50)",
+            "value": 1695.37,
+            "unit": "us",
+            "extra": "p95=4722.3us p99=5525.6us mean=2123.4us throughput=470.8ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_get_100 (p50)",
+            "value": 5551.83,
+            "unit": "us",
+            "extra": "p95=7036.5us p99=7286.3us mean=5534.5us throughput=180.7ops/s"
+          },
+          {
+            "name": "compare.async.bulk_get_100 (p50)",
+            "value": 4511.46,
+            "unit": "us",
+            "extra": "p95=5471.8us p99=5697.6us mean=4546.9us throughput=219.9ops/s"
           }
         ]
       }
