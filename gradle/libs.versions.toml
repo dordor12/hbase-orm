@@ -6,7 +6,7 @@ jmh = "1.37"
 jmh-plugin = "0.7.2"
 junit = "5.10.2"
 testcontainers = "1.19.8"
-publish_plugin = "2.0.0"
+maven_publish_plugin = "0.34.0"
 release_plugin = "3.1.0"
 
 [libraries]
@@ -28,5 +28,5 @@ testcontainers_junit = ["testcontainers", "testcontainers-junit5"]
 
 [plugins]
 jmh = { id = "me.champeau.jmh", version.ref = "jmh-plugin" }
-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "publish_plugin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven_publish_plugin" }
 release = { id = "net.researchgate.release", version.ref = "release_plugin" }
