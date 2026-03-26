@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774527408925,
+  "lastUpdate": 1774529051052,
   "repoUrl": "https://github.com/dordor12/hbase-orm",
   "entries": {
     "Benchmark": [
@@ -350,6 +350,76 @@ window.BENCHMARK_DATA = {
             "value": 3974.13,
             "unit": "us",
             "extra": "p95=7329.0us p99=8196.5us mean=4602.8us throughput=217.2ops/s"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "committer": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "distinct": true,
+          "id": "80ddb2d40fa051c80e75684b6c3174fda2d890a1",
+          "message": "Replace Javadoc with Dokka for modern API documentation\n\nProduces searchable HTML with dark mode toggle, same style as\nKotlin stdlib docs. Uses dokkaHtmlMultiModule for aggregated\nmulti-module output deployed to GitHub Pages.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>",
+          "timestamp": "2026-03-26T14:40:57+02:00",
+          "tree_id": "8d758eb50d5c75df63e45ba730439bdd598471a0",
+          "url": "https://github.com/dordor12/hbase-orm/commit/80ddb2d40fa051c80e75684b6c3174fda2d890a1"
+        },
+        "date": 1774529050503,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "compare.sync.single_put_get (p50)",
+            "value": 1622.61,
+            "unit": "us",
+            "extra": "p95=2285.4us p99=3470.1us mean=1655.3us throughput=603.9ops/s"
+          },
+          {
+            "name": "compare.async.single_put_get (p50)",
+            "value": 1141.48,
+            "unit": "us",
+            "extra": "p95=2524.0us p99=4407.9us mean=1302.9us throughput=767.1ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_put_100 (p50)",
+            "value": 3021.38,
+            "unit": "us",
+            "extra": "p95=4712.9us p99=7140.0us mean=3466.9us throughput=288.4ops/s"
+          },
+          {
+            "name": "compare.async.bulk_put_100 (p50)",
+            "value": 15078.68,
+            "unit": "us",
+            "extra": "p95=18048.4us p99=24231.2us mean=15349.4us throughput=65.2ops/s"
+          },
+          {
+            "name": "compare.sync.prefix_scan_100 (p50)",
+            "value": 3032.59,
+            "unit": "us",
+            "extra": "p95=5513.5us p99=9600.6us mean=3254.4us throughput=307.2ops/s"
+          },
+          {
+            "name": "compare.async.prefix_scan_100 (p50)",
+            "value": 1335.62,
+            "unit": "us",
+            "extra": "p95=1536.7us p99=1613.6us mean=1364.5us throughput=732.7ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_get_100 (p50)",
+            "value": 5140.73,
+            "unit": "us",
+            "extra": "p95=10461.6us p99=11555.3us mean=6294.9us throughput=158.8ops/s"
+          },
+          {
+            "name": "compare.async.bulk_get_100 (p50)",
+            "value": 3296.21,
+            "unit": "us",
+            "extra": "p95=3719.2us p99=5118.3us mean=3380.4us throughput=295.8ops/s"
           }
         ]
       }
