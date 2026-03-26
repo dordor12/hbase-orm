@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.dokka)
 }
 
 group = "io.github.dordor12"

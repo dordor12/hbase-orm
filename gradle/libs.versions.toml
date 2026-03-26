@@ -8,6 +8,7 @@ junit = "5.10.2"
 testcontainers = "1.19.8"
 maven_publish_plugin = "0.34.0"
 release_plugin = "3.1.0"
+dokka = "2.0.0"
 
 [libraries]
 hbase-client = { module = "org.apache.hbase:hbase-client", version.ref = "hbase" }
@@ -30,3 +31,4 @@ testcontainers_junit = ["testcontainers", "testcontainers-junit5"]
 jmh = { id = "me.champeau.jmh", version.ref = "jmh-plugin" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven_publish_plugin" }
 release = { id = "net.researchgate.release", version.ref = "release_plugin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
