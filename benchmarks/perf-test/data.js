@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774428409699,
+  "lastUpdate": 1774527408925,
   "repoUrl": "https://github.com/dordor12/hbase-orm",
   "entries": {
     "Benchmark": [
@@ -280,6 +280,76 @@ window.BENCHMARK_DATA = {
             "value": 4511.46,
             "unit": "us",
             "extra": "p95=5471.8us p99=5697.6us mean=4546.9us throughput=219.9ops/s"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "committer": {
+            "email": "dor.amid@taboola.com",
+            "name": "Dor Amid"
+          },
+          "distinct": true,
+          "id": "3860fb62107ad34b8c4c90859e9c120c5c652766",
+          "message": "Migrate hbase-orm-processor publishing to VannikTech plugin\n\nSame migration as hbase-orm-api — use com.vanniktech.maven.publish\nfor Central Portal compatibility.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>",
+          "timestamp": "2026-03-26T14:14:00+02:00",
+          "tree_id": "efd6db4e46453afdd07e6abbdb31fe3f91172e71",
+          "url": "https://github.com/dordor12/hbase-orm/commit/3860fb62107ad34b8c4c90859e9c120c5c652766"
+        },
+        "date": 1774527408589,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "compare.sync.single_put_get (p50)",
+            "value": 1561.23,
+            "unit": "us",
+            "extra": "p95=2568.6us p99=3688.8us mean=1637.6us throughput=610.4ops/s"
+          },
+          {
+            "name": "compare.async.single_put_get (p50)",
+            "value": 1082.05,
+            "unit": "us",
+            "extra": "p95=1860.7us p99=3408.1us mean=1191.8us throughput=838.7ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_put_100 (p50)",
+            "value": 2723.68,
+            "unit": "us",
+            "extra": "p95=5348.2us p99=8195.1us mean=3508.2us throughput=285.0ops/s"
+          },
+          {
+            "name": "compare.async.bulk_put_100 (p50)",
+            "value": 15277.19,
+            "unit": "us",
+            "extra": "p95=20640.0us p99=27940.9us mean=15906.1us throughput=62.9ops/s"
+          },
+          {
+            "name": "compare.sync.prefix_scan_100 (p50)",
+            "value": 1907.62,
+            "unit": "us",
+            "extra": "p95=4189.4us p99=4199.7us mean=2241.8us throughput=446.0ops/s"
+          },
+          {
+            "name": "compare.async.prefix_scan_100 (p50)",
+            "value": 1350.45,
+            "unit": "us",
+            "extra": "p95=1728.9us p99=2071.6us mean=1403.6us throughput=712.3ops/s"
+          },
+          {
+            "name": "compare.sync.bulk_get_100 (p50)",
+            "value": 4883.52,
+            "unit": "us",
+            "extra": "p95=7313.9us p99=9108.2us mean=5169.1us throughput=193.4ops/s"
+          },
+          {
+            "name": "compare.async.bulk_get_100 (p50)",
+            "value": 3974.13,
+            "unit": "us",
+            "extra": "p95=7329.0us p99=8196.5us mean=4602.8us throughput=217.2ops/s"
           }
         ]
       }
